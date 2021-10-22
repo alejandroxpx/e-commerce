@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if message %}
+<div class="alert alert-warning">
+    <strong>Warning!</strong> {{ message }}
+</div>        
+{% endif %}
+
+   <h1>Categories</h1><br>
+
+   <a href="{% url 'category'  'HOME' %}">Home</a><br>
+   <a href="{% url 'category'  'ELEC' %}">Electronic</a><br>
+   <a href="{% url 'category' 'FASH' %}">Fashion</a><br>
+   <a href="{% url 'category' 'TOYs' %}">Toy</a><br>
+   <a href="{% url 'category' 'None' %}">Other</a>
+{% endblock %}

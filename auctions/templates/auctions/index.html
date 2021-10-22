@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if message %}
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> {{ message }}
+    </div>        
+{% endif %}
+
+    <h2>Active Listings</h2>
+
+    {% for listing in auctionlist %}
+        {% if listing.active == False %}
+        <div class="alert alert-info alert-dismissible d-flex align-items-center fade show">
+            <strong>Bidding Winner! </strong> {{ listing.winner.username}} has won the {{listing.title}} listing
+        </div>
+        {% endif %}
+    <div class="row">
+        <div class = "column">
+            <a href="{% url 'listing' listing.id %}">
+                <img src={{listing.url}} alt="Image" width="300px" height="200px">
+            </a>
+        </div>
+    
+        <div class = "column">
+            <a href="{% url 'listing' listing.id %}"><h4>{{listing.title}}</h4></a><br>
+            <h6>Price: ${{listing.startingbid}}</h5><br>
+            <h6>Description:</h6><p>{{listing.description}}</p><br>
+            <h6>Category: {{listing.category}}</h6><br>
+            <p>Listing Creator: {{listing.user.username}}</p>
+            <br>
+        </div>
+    </div>
+
+
+        
+    {% endfor %}
+
+
+{% endblock %}

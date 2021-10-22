@@ -1,0 +1,32 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+{% if message %}
+<div class="alert alert-warning">
+    <strong>Warning!</strong> {{ message }}
+</div>        
+{% endif %}
+
+<h1>Category : {{category}}</h1>
+
+{% for item in listing %}
+
+<div class="row">
+    <div class = "column">
+        <img src={{item.url}} alt="Image" width="300px" height="200px">
+    </div>
+
+    <div class = "column">
+        <a href="{% url 'listing' item.id %}"><h4>{{item.title}}</h4></a>
+        <h6>Price: ${{item.startingbid}}</h5>
+        <h6>Description: {{item.description}}</h6>
+        <h6>Category: {{item.category}}</h6><br>
+        <br>
+    </div>
+</div>
+{% endfor%}
+
+
+
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+{% if listing.active == False %}
+
+<h1>Closed Listing: {{listing.title}}</h1>
+
+    <div class="alert alert-info alert-dismissible d-flex align-items-center fade show">
+        <strong>Bidding Winner! </strong> User {{listing.winner.username}} has won the {{listing.title}} listing
+    </div>
+
+    <div class="row">
+        <div class = "column">
+            <img src={{listing.url}} alt="Image" width="300px" height="200px">
+        </div>
+
+        <div class = "column">
+            <h2>Details</h2><br>
+            <h3>Price: ${{listing.startingbid}}</h3><br>
+            <h6>Description: {{listing.description}}</h6><br>
+            <h6>Category: {{listing.category}}</h6><br>
+            <a href="{%url 'createwatchlist' listing.id %}">Add Item to Watchlist</a><br><br>
+            <h6>Listed by: {{listing.user.username}}</h6>
+                {% if listing.user.username == request.user.username %}
+                    <a href="{% url 'closelisting' listing.id %}"><h3>Close the listing</h3></a>
+                {% endif %}
+        </div>
+    </div>
+    <a href="{% url 'index' %}">View active listings</a>
+
+{% else %}
+
+    {% if message %}
+        <div class="alert alert-warning">
+            <strong>Warning!</strong> {{ message }}
+        </div>        
+    {% endif %}
+
+    <h1>Current Listing: {{listing.title}}</h1>
+
+    <div class="row">
+        <div class = "column">
+            <img src={{listing.url}} alt="Image" width="300px" height="200px">
+        </div>
+
+        <div class = "column">
+            <h2>Details</h2><br>
+            <h3>Price: ${{listing.startingbid}}</h3><br>
+            <h6>Description:</h6> <p>{{listing.description}}</p><br>
+            <h6>Category: {{listing.category}}</h6><br>
+            
+            <h6>Listed by: {{listing.user.username}}</h6>
+                {% if listing.user.username == request.user.username %}
+                    <a href="{% url 'closelisting' listing.id %}"><h3>Close the listing</h3></a>
+                {% endif %}
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <a href="{%url 'createwatchlist' listing.id %}">Add Item to Watchlist</a><br><br>
+        <h2>Bidding</h2>
+        {% if highest_bid %}
+        <p>Highest bid ${{ highest_bid.bid }} </p>
+        {% endif %}
+            
+        {% if bid %}
+            <p> Your current bid ${{bid}} </p>
+        {% endif %}
+        <form action="{% url 'bid' listing.id listing.startingbid %}" method="post">
+            {% csrf_token %}
+            <input type="number", name="bid">
+            <input type="submit">
+        </form>
+
+    <div id = comments>
+        <h2>Add a Comment</h2>
+        <form action="{% url 'comments' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="comment">
+            <input type="submit">
+        </form>
+    </div>
+    {% endif %}
+    <a href="{% url 'index' %}">View active listings</a>
+
+
+    <h2>Comments</h2><br><br>
+        {% for comments in comment %}
+        user: {{comments.user_id.username}}<br>
+        Comment: {{comments.comment}}<br>
+        {% endfor %}
+
+{% endif %}
+
+{% endblock %}

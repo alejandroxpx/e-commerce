@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if message %}
+<div class="alert alert-warning">
+    <strong>Warning!</strong> {{ message }}
+</div>        
+{% endif %}
+
+   <h1>Watchlist</h1><br>
+
+    {% for item in watchlist%}
+
+        <div class="row">
+            <div class = "column">
+                <img src={{item.listing.url}} alt="Image" width="300px" height="200px">
+            </div>
+        
+            <div class = "column">
+                <a href="{% url 'listing' item.listing.id %}"><h4>{{item.listing.title}}</h4></a>
+                <h6>Price: ${{item.listing.startingbid}}</h5>
+                <h6>Description: {{item.listing.description}}</h6>
+                <h6>Category: {{item.listing.category}}</h6><br>
+                <a href="{% url 'deletewatchlistitem' item.listing.id %}"><button>Remove item from list</button></a>
+                <br>
+            </div>
+        </div>
+    {% endfor%}
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <style>
+    form {
+        text-align: left;
+        padding: 20px;
+    }
+    </style>
+    <h2>Create listing</h2>
+
+    {% if message %}
+        <div>{{message}}</div>
+    {% endif %}
+
+    <form action="{% url 'createlisting'  %}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit">
+    </form>
+    <a href="{% url 'index' %}">View active listing</a>
+    
+{% endblock %}
